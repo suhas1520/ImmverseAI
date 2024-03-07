@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-node-deployment
+  labels:
+    app: hello-world-node
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-world-node
+  template:
+    metadata:
+      labels:
+        app: hello-world-node
+    spec:
+      containers:
+      - name: hello-world-node1
+        image: suhas1520/suhas-docker-practice:${BUILD_NUMBER} 
+        ports:
+          - containerPort: 3000
+        resources:
+          limits:
+            cpu: 300m
+            memory: 500Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-node
+spec:
+  selector:
+    app: hello-world-node
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
